@@ -37,15 +37,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent explicitIntent = new Intent(getApplicationContext(),NewTaskActivity.class);
-                startActivityForResult(explicitIntent,KEY_REQUEST_TASK);
+                startActivity(explicitIntent);
             }
         });
     }
 
     private void setUI() {
         Context context = getApplicationContext();
+        tasks = this.loadTasks();
         this.rvTasksList= (RecyclerView) this.findViewById(R.id.rvTasks);
-        this.mTaskAdapter = new TaskAdapter(this.loadTasks());
+        this.mTaskAdapter = new TaskAdapter(tasks);
         this.mLayoutManager = new LinearLayoutManager(context);
         this.mItemDecoration = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
 
@@ -58,22 +59,4 @@ public class MainActivity extends AppCompatActivity {
         return TaskDBHelper.getInstance(this).getAllTasks();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case KEY_REQUEST_TASK:
-                if(resultCode==RESULT_OK){
-                    processTask(data.getExtras());
-                }
-                break;
-        }
-    }
-
-    private void processTask(Bundle extras) {
-        if(extras.containsKey(KEY_TASK)){
-            Task task = (Task) extras.getSerializable(KEY_TASK);
-
-        }
-    }
 }

@@ -1,11 +1,11 @@
 package hr.ferit.kstefancic.dailytasker;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
+import java.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +15,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import java.io.Serializable;
+
+import static android.R.attr.priority;
 
 public class NewTaskActivity extends Activity implements View.OnClickListener {
 
@@ -74,14 +76,12 @@ public class NewTaskActivity extends Activity implements View.OnClickListener {
                 else {
                     category = String.valueOf(this.spinnerCategories.getSelectedItem());
                 }
-                int priority = rbgPriorities.getCheckedRadioButtonId()+1;
+                this.rbgPriorities = (RadioGroup) findViewById(R.id.rgPriorities);
+                this.rbPriority= (RadioButton) findViewById(rbgPriorities.getCheckedRadioButtonId());
                 Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
-                Task task = new Task(title,description,category,String.valueOf(df.format(c.getTime())),priority);
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra(MainActivity.KEY_TASK, (Serializable) task);
-                this.setResult(RESULT_OK,resultIntent);
-                this.finish();
+                Task task = new Task(title,description,category,String.valueOf(c.getTime()), Integer.valueOf(rbPriority.getText().toString()));
+                TaskDBHelper.getInstance(getApplicationContext()).insertTask(task);
+
         }
     }
 }
