@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class TaskDBHelper extends SQLiteOpenHelper {
 
     static final String CREATE_TABLE_TASKS = "CREATE TABLE " + Schema.TABLE_TASK +
-            " (" + Schema.TITLE + " TEXT," + Schema.DESCRIPTION+ " TEXT," +Schema.DATE + " DATE," + Schema.CATEGORY + " TEXT," +Schema.PRIORITY+" INT CHECK("+Schema.PRIORITY+">=1 AND "+Schema.PRIORITY+"<=3));";
+            " (" + Schema.TITLE + " VARCHAR(100)," + Schema.DESCRIPTION+ " TEXT," +Schema.DATE + " VARCHAR(30)," + Schema.CATEGORY + " VARCHAR(30)," +Schema.PRIORITY+" INT );";
     static final String DROP_TABLE_TASK = "DROP TABLE IF EXISTS " +Schema.TABLE_TASK;
     static final String SELECT_ALL_BOOKS = "SELECT * FROM "+ Schema.TABLE_TASK;
     static final String SELECT_CATEGORIES = "SELECT "+Schema.CATEGORY+" FROM "+Schema.TABLE_TASK;
@@ -51,7 +51,10 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(SELECT_CATEGORIES,null);
         if(cursor.moveToFirst()){
             do{
-                categories.add(cursor.getString(0));
+                String category = cursor.getString(0);
+                if(!categories.contains(category)) {
+                    categories.add(category);
+                }
             }while (cursor.moveToNext());
         }
         cursor.close();

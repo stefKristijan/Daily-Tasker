@@ -1,25 +1,27 @@
 package hr.ferit.kstefancic.dailytasker;
 
 import android.app.Activity;
-import android.icu.text.SimpleDateFormat;
-import java.util.Calendar;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
-import static android.R.attr.priority;
 
 public class NewTaskActivity extends Activity implements View.OnClickListener {
 
+    private static final String ERROR_EMPTY_BOX ="Please enter the title and choose a category or add a new one" ;
     Button btnNewCategory, btnAddTask, btnChooseCategory;
     EditText etTitle, etDescription, etCategory;
     Spinner spinnerCategories;
@@ -46,12 +48,20 @@ public class NewTaskActivity extends Activity implements View.OnClickListener {
         this.etTitle= (EditText) findViewById(R.id.etTitle);
         this.btnChooseCategory= (Button) findViewById(R.id.btnChooseCategory);
         this.spinnerCategories = (Spinner) findViewById(R.id.spinnerCategories);
+        setSpinner();
+    }
+
+    private void setSpinner() {
+        ArrayList<String> categories = TaskDBHelper.getInstance(this).getCategories();
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,categories);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategories.setAdapter(spinnerAdapter);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch(v.getId()) {
             case R.id.btnNewCategory:
                 this.etCategory.setVisibility(View.VISIBLE);
                 this.spinnerCategories.setVisibility(View.GONE);
@@ -67,21 +77,45 @@ public class NewTaskActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.btnAddTask:
-                String title=this.etTitle.getText().toString();
-                String description = this.etDescription.getText().toString();
-                String category;
-                if(etCategory.getVisibility()==View.VISIBLE){
-                    category = this.etCategory.getText().toString();
-                }
-                else {
-                    category = String.valueOf(this.spinnerCategories.getSelectedItem());
-                }
-                this.rbgPriorities = (RadioGroup) findViewById(R.id.rgPriorities);
-                this.rbPriority= (RadioButton) findViewById(rbgPriorities.getCheckedRadioButtonId());
-                Calendar c = Calendar.getInstance();
-                Task task = new Task(title,description,category,String.valueOf(c.getTime()), Integer.valueOf(rbPriority.getText().toString()));
+
+                Task task = getTaskAttr();
                 TaskDBHelper.getInstance(getApplicationContext()).insertTask(task);
 
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                this.startActivity(intent);
         }
+    }
+
+    private Task getTaskAttr() {
+        String title = this.etTitle.getText().toString();
+        String description = this.etDescription.getText().toString();
+        String category;
+        if (etCategory.getVisibility() == View.VISIBLE) {
+            category = this.etCategory.getText().toString();
+        } else {
+            category = String.valueOf(this.spinnerCategories.getSelectedItem());
+        }
+        int priorityColor = getPriorityColor();
+        Date now = new Date();
+        String stringDate = new SimpleDateFormat("dd. MMMM, yyyy.").format(now);
+        Task task = new Task(title, description, category, stringDate, priorityColor);
+        return task;
+    }
+
+    private int getPriorityColor() {
+        this.rbgPriorities = (RadioGroup) findViewById(R.id.rgPriorities);
+        int rbId = rbgPriorities.getCheckedRadioButtonId();
+        this.rbPriority= (RadioButton) findViewById(rbId);
+        switch (rbId){
+            case R.id.rbPriority1:
+                return R.color.colorRed;
+
+            case R.id.rbPriority2:
+                return R.color.colorYellow;
+
+            case R.id.rbPriority3:
+                return R.color.colorGreen;
+        }
+        return 0;
     }
 }

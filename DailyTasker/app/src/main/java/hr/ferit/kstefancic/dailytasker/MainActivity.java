@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ScrollView;
 
 import java.util.ArrayList;
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         this.setUI();
 
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,10 +46,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadTasks();
+    }
+
+
     private void setUI() {
         Context context = getApplicationContext();
         tasks = this.loadTasks();
         this.rvTasksList= (RecyclerView) this.findViewById(R.id.rvTasks);
+        this.rvTasksList.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                findViewById(R.id.scrollCategory).getParent().requestDisallowInterceptTouchEvent(false);
+                return false;
+            }
+        });
         this.mTaskAdapter = new TaskAdapter(tasks);
         this.mLayoutManager = new LinearLayoutManager(context);
         this.mItemDecoration = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
@@ -53,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         this.rvTasksList.addItemDecoration(this.mItemDecoration);
         this.rvTasksList.setLayoutManager(this.mLayoutManager);
         this.rvTasksList.setAdapter(this.mTaskAdapter);
+
     }
 
     private ArrayList<Task> loadTasks() {

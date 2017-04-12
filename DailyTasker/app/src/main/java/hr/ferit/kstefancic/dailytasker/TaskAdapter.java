@@ -2,9 +2,12 @@ package hr.ferit.kstefancic.dailytasker;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,7 +40,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.tvDate.setText(task.getDate());
         holder.tvTitle.setText(task.getTitle());
         holder.tvDescription.setText(task.getDescription());
-        holder.vPriority.setBackgroundColor(task.getPriority());
+        holder.vPriority.setBackgroundResource(task.getPriority());
     }
 
     public void insert(Task task){
@@ -52,16 +55,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvTitle, tvDescription, tvDate, tvCategory;
-        public View vPriority;
+         TextView tvTitle, tvDescription, tvDate, tvCategory;
+         View vPriority;
+        ScrollView scrollCategory;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             this.tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             this.tvCategory = (TextView) itemView.findViewById(R.id.tvCategory);
             this.vPriority = itemView.findViewById(R.id.vPriority);
             this.tvDescription= (TextView) itemView.findViewById(R.id.tvDescription);
             this.tvDate= (TextView) itemView.findViewById(R.id.tvDate);
+            this.scrollCategory = (ScrollView) itemView.findViewById(R.id.scrollCategory);
+            scrollCategory.setOnTouchListener(new View.OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+
+            });
         }
     }
 }
