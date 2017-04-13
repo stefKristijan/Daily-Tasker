@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         this.setUI();
 
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
         tasks = this.loadTasks();
         this.rvTasksList= (RecyclerView) this.findViewById(R.id.rvTasks);
         this.rvTasksList.setOnTouchListener(new View.OnTouchListener() {
-
             public boolean onTouch(View v, MotionEvent event) {
                 findViewById(R.id.scrollCategory).getParent().requestDisallowInterceptTouchEvent(false);
                 return false;
             }
         });
-        this.mTaskAdapter = new TaskAdapter(tasks);
+
+        this.mTaskAdapter = new TaskAdapter(tasks,context);
         this.mLayoutManager = new LinearLayoutManager(context);
         this.mItemDecoration = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
 

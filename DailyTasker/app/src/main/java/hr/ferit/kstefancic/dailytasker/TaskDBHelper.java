@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,9 +23,12 @@ public class TaskDBHelper extends SQLiteOpenHelper {
 
 
     private static TaskDBHelper mTaskHelper = null;
+    Context context;
 
     private TaskDBHelper (Context context){
+
         super(context.getApplicationContext(),Schema.DATABASE_NAME,null,Schema.SCHEMA_VER);
+        this.context=context;
     }
 
     public static synchronized  TaskDBHelper getInstance(Context context){
@@ -72,6 +76,12 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase tasksDB = this.getWritableDatabase();
         tasksDB.insert(Schema.TABLE_TASK, Schema.TITLE, contVal);
         tasksDB.close();
+    }
+
+    public void deleteTask(Task task){
+        SQLiteDatabase db =  this.getWritableDatabase();
+        db.delete(Schema.TABLE_TASK, Schema.TITLE+"='"+task.getTitle()+"' AND "+Schema.DESCRIPTION+"='"+task.getDescription()+"'",null);
+        db.close();
     }
 
     public ArrayList<Task> getAllTasks(){

@@ -12,8 +12,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,7 +95,7 @@ public class NewTaskActivity extends Activity implements View.OnClickListener {
         }
         int priorityColor = getPriorityColor();
         Date now = new Date();
-        String stringDate = new SimpleDateFormat("dd. MMMM, yyyy.").format(now);
+        String stringDate = new SimpleDateFormat("dd. MMMM").format(now);
         Task task = new Task(title, description, category, stringDate, priorityColor);
         return task;
     }
@@ -108,13 +106,13 @@ public class NewTaskActivity extends Activity implements View.OnClickListener {
         this.rbPriority= (RadioButton) findViewById(rbId);
         switch (rbId){
             case R.id.rbPriority1:
-                return R.color.colorRed;
+                return R.drawable.priority1_drawable;
 
             case R.id.rbPriority2:
-                return R.color.colorYellow;
+                return R.drawable.priority2_drawable;
 
             case R.id.rbPriority3:
-                return R.color.colorGreen;
+                return R.drawable.priority3_drawable;
         }
         return 0;
     }

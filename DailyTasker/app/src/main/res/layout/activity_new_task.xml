@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    android:weightSum="1">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:alpha="0.7"
+        android:layout_weight="0.1"
         android:id="@+id/tvTitle"
         android:text="Add new task"/>
 
@@ -15,17 +23,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_weight="0.2"
         android:weightSum="1">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/label"
             android:text="Title:"
-            android:layout_weight="0.7"
             android:id="@+id/lbTitle"/>
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+           style="@style/edit_text"
+            android:lines="2"
+            android:maxLength="40"
+            android:hint="Enter title"
             android:layout_weight="0.3"
             android:id="@+id/etTitle"/>
 
@@ -35,19 +44,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_weight="0.2"
         android:weightSum="1">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/label"
             android:text="Description:"
-            android:layout_weight="0.7"
             android:id="@+id/lbDescription"/>
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/edit_text"
             android:layout_weight="0.3"
             android:inputType="textMultiLine"
+            android:hint="Enter description"
+            android:lines="4"
+            android:maxLength="200"
             android:id="@+id/etDesc"/>
     </LinearLayout>
 
@@ -55,18 +65,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_weight="0.2"
         android:weightSum="1">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Category:"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/tvTextSize"
             android:layout_weight="0.4"
             android:id="@+id/lbCategory"/>
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/edit_text"
+            android:hint="Enter a new category"
             android:visibility="gone"
             android:layout_weight="0.2"
             android:id="@+id/etCategory"/>
@@ -75,19 +89,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
+            android:gravity="center"
             android:id="@+id/spinnerCategories"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.4"
+            android:gravity="center"
             android:id="@+id/btnNewCategory"
-            android:text="NEW"/>
+            android:text="NEW"
+            android:background="@drawable/task_item_border"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:gravity="center"
+            android:background="@drawable/task_item_border"
             android:layout_weight="0.4"
             android:text="CHOOSE"
             android:id="@+id/btnChooseCategory"/>
@@ -98,42 +117,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_weight="0.2"
         android:weightSum="1">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Priority:"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/tvTextSize"
             android:layout_weight="0.7"
             android:id="@+id/lbPriority"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rgPriorities"
-            android:layout_weight="0.3">
+            android:layout_weight="0.3"
+            >
 
             <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/radio_button"
                 android:text="@string/priority_1"
                 android:textColor="@color/colorRed"
                 android:checked="true"
-                android:id="@+id/rbPriority1"/>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/priority_2"
-                android:textColor="@color/colorYellow"
-                android:id="@+id/rbPriority2"
+                android:id="@+id/rbPriority1"
+                android:buttonTint="@color/colorRed"
                 />
 
             <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:text="@string/priority_2"
+                android:textColor="@color/colorYellow"
+                android:id="@+id/rbPriority2"
+                style="@style/radio_button"
+                android:buttonTint="@color/colorYellow"
+                />
+
+            <RadioButton
+                style="@style/radio_button"
                 android:text="@string/priority_3"
                 android:textColor="@color/colorGreen"
-                android:id="@+id/rbPriority3"/>
+                android:id="@+id/rbPriority3"
+                android:buttonTint="@color/colorGreen"
+                />
         </RadioGroup>
     </LinearLayout>
 
@@ -141,7 +167,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add task"
-        android:id="@+id/btnAddTask"/>
+        android:id="@+id/btnAddTask"
+        android:layout_weight="0.1"
+        android:background="@drawable/task_item_border"/>
 
 
 </LinearLayout>

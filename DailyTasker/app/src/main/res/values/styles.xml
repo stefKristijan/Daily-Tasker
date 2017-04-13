@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -17,4 +17,31 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="label">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">@dimen/tvTitleWeight</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/tvTextSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="radio_button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">@dimen/tvTextSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="edit_text">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">@dimen/tvTextSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/colorBrown</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+
+    <item name="tvTitleWeight" type="dimen" format="float">0.7</item>
+    <dimen name="tvTextSize">15sp</dimen>
 </resources>
