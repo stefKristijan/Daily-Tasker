@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +21,7 @@ import java.util.Date;
 
 public class NewTaskActivity extends Activity implements View.OnClickListener {
 
-    private static final String ERROR_EMPTY_BOX ="Please enter the title and choose a category or add a new one" ;
+    private static final String ERROR_EMPTY_FIELD = "Please complete the required fields *";
     Button btnNewCategory, btnAddTask, btnChooseCategory;
     EditText etTitle, etDescription, etCategory;
     Spinner spinnerCategories;
@@ -77,21 +79,38 @@ public class NewTaskActivity extends Activity implements View.OnClickListener {
             case R.id.btnAddTask:
 
                 Task task = getTaskAttr();
-                TaskDBHelper.getInstance(getApplicationContext()).insertTask(task);
+                if(task==null){
+                    Toast.makeText(this,ERROR_EMPTY_FIELD,Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    TaskDBHelper.getInstance(getApplicationContext()).insertTask(task);
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                this.startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    this.startActivity(intent);
+                }
         }
     }
 
     private Task getTaskAttr() {
-        String title = this.etTitle.getText().toString();
-        String description = this.etDescription.getText().toString();
-        String category;
+        String title, category, description;
+        if (this.etTitle.getText().toString().matches("")){
+            return null;
+        }else {
+            title = this.etTitle.getText().toString();
+        }
+        description = this.etDescription.getText().toString();
         if (etCategory.getVisibility() == View.VISIBLE) {
-            category = this.etCategory.getText().toString();
+            if (this.etCategory.getText().toString().matches("")) {
+                return null;
+            }
+            else{
+                category = this.etCategory.getText().toString();
+            }
         } else {
             category = String.valueOf(this.spinnerCategories.getSelectedItem());
+            if(category.matches("") || category==null || category=="null") {
+                return null;
+            }
         }
         int priorityColor = getPriorityColor();
         Date now = new Date();
